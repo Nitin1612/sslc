@@ -75,7 +75,7 @@ export default class Marksheet extends Component {
                     parseInt(this.state.tam) +
                     parseInt(this.state.mat) +
                     parseInt(this.state.sci) +
-                    parseInt(this.state.soc)) / 5
+                    parseInt(this.state.soc)) / 5.0
                 });
               }}>
               <Text style={styles.profile}>Average</Text>
