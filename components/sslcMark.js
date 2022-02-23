@@ -1,100 +1,114 @@
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  AppRegistry,
-  TextInput,
-  Button,
-  TouchableOpacity
-} from 'react-native';
+import React, { useState } from "react";
+import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 
+export default function App() {
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      Tamil: '',
+      English: '',
+      Mathematics: '',
+      Science: '',
+      Social: '',
+    }
+  });
+  const onSubmit = data => {
+    console.log(data);
+  };
 
-export default class Marksheet extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { eng: 0, tam: 0, mat: 0, sci: 0, soc: 0, result: 0, average: 0 };
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>SSLC Mark Calculator</Text>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>SSLC Mark Calculator</Text>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.nameInput}
+            placeholder='Tamil'
+            keyboardType='numeric'
+            onChangeText={value=>onChange(value)}
+            value={value}
+          />
+        )}
+        name="Tamil"
+      />
+      {errors.Tamil && <Text style={{ color: 'red' }}>*Enter Tamil Mark </Text>}
 
-        <TextInput
-          style={styles.nameInput}
-          placeholder='English'
-          keyboardType='numeric'
-          onChangeText={(text) => this.setState({ eng: parseInt(text) })}
-        />
-        <TextInput
-          style={styles.nameInput}
-          placeholder='Tamil'
-          keyboardType='numeric'
-          onChangeText={(text) => this.setState({ tam: parseInt(text) })}
-        />
-        <TextInput
-          style={styles.nameInput}
-          placeholder='Mathematics'
-          keyboardType='numeric'
-          onChangeText={(text) => this.setState({ mat: parseInt(text) })}
-        />
-        <TextInput
-          style={styles.nameInput}
-          placeholder='Science'
-          keyboardType='numeric'
-          onChangeText={(text) => this.setState({ sci: parseInt(text) })}
-        />
-        <TextInput
-          style={styles.nameInput}
-          placeholder='Social Science'
-          keyboardType='numeric'
-          onChangeText={(text) => this.setState({ soc: parseInt(text) })}
-        />
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.nameInput}
+            placeholder='English'
+            keyboardType='numeric'
+            onChangeText={value=>onChange(value)}
+            value={value}
+          />
+        )}
+        name="English"
+      />
+      {errors.English && <Text style={{ color: 'red' }}>*Enter English Mark</Text>}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.nameInput}
+            placeholder='Mathematics'
+            keyboardType='numeric'
+            onChangeText={value=>onChange(value)}
+            value={value}
+          />
+        )}
+        name="Mathematics"
+      />
+      {errors.Mathematics && <Text style={{ color: 'red' }}>*Enter Mathematics Mark</Text>}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.nameInput}
+            placeholder='Science'
+            keyboardType='numeric'
+            onChangeText={value=>onChange(value)}
+            value={value}
+          />
+        )}
+        name="Science"
+      />
+      {errors.Science && <Text style={{ color: 'red' }}>*Enter Science Mark</Text>}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.nameInput}
+            placeholder='Social'
+            keyboardType='numeric'
+            onChangeText={value=>onChange(value)}
+            value={value}
+          />
+        )}
+        name="Social"
+      />
+      {errors.Social && <Text style={{ color: 'red' }}>*Enter Social Mark</Text>}
 
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <TouchableOpacity style={[styles.btn1, { backgroundColor: "#778899" }]}
-              onPress={() => {
-                this.setState({
-                  result: (parseInt(this.state.eng) +
-                    parseInt(this.state.tam) +
-                    parseInt(this.state.mat) +
-                    parseInt(this.state.sci) +
-                    parseInt(this.state.soc))
-                });
-              }}>
-              <Text style={styles.profile}>Sum</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.column}>
-            <TouchableOpacity style={[styles.btn1, { backgroundColor: "#daa520" }]}
-              onPress={() => {
-                this.setState({
-                  average: (parseInt(this.state.eng) +
-                    parseInt(this.state.tam) +
-                    parseInt(this.state.mat) +
-                    parseInt(this.state.sci) +
-                    parseInt(this.state.soc)) / 5
-                });
-              }}>
-              <Text style={styles.profile}>Average</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={[styles.result, { backgroundColor: "#778899" }]}>{this.state.result}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={[styles.result, { backgroundColor: "#daa520" }]}>{this.state.average}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -151,3 +165,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
+
+
