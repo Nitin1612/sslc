@@ -10,10 +10,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "react": "17.0.2",
     "react-hook-form": "^7.27.1",
     "react-native": "0.67.1",
-    "react-native-form-validator": "^0.5.1"
+    "react-native-form-validator": "^0.5.1",
+    "react-native-formik": "^1.7.8"
   },
   "devDependencies": {
     "@babel/core": "7.16.12",

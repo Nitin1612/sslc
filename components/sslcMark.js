@@ -1,114 +1,74 @@
-import React, { useState } from "react";
-import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import React, { Component } from 'react';
+import ValidationComponent from 'react-native-form-validator';
 import { useForm, Controller } from "react-hook-form";
+import { withFormik } from 'formik';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  AppRegistry,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 
-export default function App() {
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      Tamil: '',
-      English: '',
-      Mathematics: '',
-      Science: '',
-      Social: '',
-    }
-  });
-  const onSubmit = data => {
-    console.log(data);
-  };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>SSLC Mark Calculator</Text>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.nameInput}
-            placeholder='Tamil'
-            keyboardType='numeric'
-            onChangeText={value=>onChange(value)}
-            value={value}
-          />
-        )}
-        name="Tamil"
-      />
-      {errors.Tamil && <Text style={{ color: 'red' }}>*Enter Tamil Mark </Text>}
+class Marksheet extends ValidationComponent {
+  constructor(props) {
+    super(props);
+    this.state = { eng: 0, tam: 0, mat: 0, sci: 0, soc: 0, result: 0, average: 0 };
+  }
 
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.nameInput}
-            placeholder='English'
-            keyboardType='numeric'
-            onChangeText={value=>onChange(value)}
-            value={value}
-          />
-        )}
-        name="English"
-      />
-      {errors.English && <Text style={{ color: 'red' }}>*Enter English Mark</Text>}
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.nameInput}
-            placeholder='Mathematics'
-            keyboardType='numeric'
-            onChangeText={value=>onChange(value)}
-            value={value}
-          />
-        )}
-        name="Mathematics"
-      />
-      {errors.Mathematics && <Text style={{ color: 'red' }}>*Enter Mathematics Mark</Text>}
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.nameInput}
-            placeholder='Science'
-            keyboardType='numeric'
-            onChangeText={value=>onChange(value)}
-            value={value}
-          />
-        )}
-        name="Science"
-      />
-      {errors.Science && <Text style={{ color: 'red' }}>*Enter Science Mark</Text>}
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.nameInput}
-            placeholder='Social'
-            keyboardType='numeric'
-            onChangeText={value=>onChange(value)}
-            value={value}
-          />
-        )}
-        name="Social"
-      />
-      {errors.Social && <Text style={{ color: 'red' }}>*Enter Social Mark</Text>}
+  render() {
+    
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>SSLC Mark Calculator</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder='English'
+          keyboardType='numeric'
+          onChangeText={(text) => this.props.setFieldValue('eng',eng)}
+        />
+        <Text style={{color:'red'}}>{this.props.errors.eng}</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder='Tamil'
+          keyboardType='numeric'
+          onChangeText={(text) => this.props.setFieldValue('tam',tam)}
+        />
+        <Text style={{color:'red'}}>{this.props.errors.tam}</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder='Mathematics'
+          keyboardType='numeric'
+          onChangeText={(text) => this.props.setFieldValue('mat',mat)}
+        />
+        <Text style={{color:'red'}}>{this.props.errors.mat}</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder='Science'
+          keyboardType='numeric'
+          onChangeText={(text) => this.props.setFieldValue('sci',sci)}
+        />
+        <Text style={{color:'red'}}>{this.props.errors.sci}</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder='Social Science'
+          keyboardType='numeric'
+          onChangeText={(text) => this.props.setFieldValue('soc',soc)}
+        />
+        <Text style={{color:'red'}}>{this.props.errors.soc}</Text>
+        <Button
+          onPress={() => { this.props.handleSubmit() }}
+          title='Submit' />
+        
+      </View>
+    );
+  }
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-    </View>
-  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -165,5 +125,43 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
+export default withFormik({
+  mapPropsToValues: () => ({ eng: '', tam: '', mat: '', sci: '', soc: '' }),
+  validate: (values, props) => {
+    const errors = {};
+    
+    if (!values.tam) {
+      errors.tam = 'Mark Required';
+    } else if (values.tam.length < 0) {
+      errors.tam = 'invalid Mark';
+    }
 
+    if (!values.eng) {
+      errors.eng = 'Mark Required';
+    } else if (values.eng.length < 0) {
+      errors.eng = 'invalid Mark';
+    }
 
+    if (!values.mat) {
+      errors.mat = 'Mark Required';
+    } else if (values.mat.length < 0) {
+      errors.mat = 'invalid Mark';
+    }
+
+    if (!values.sci) {
+      errors.sci = 'Mark Required';
+    } else if (values.sci.length < 0) {
+      errors.sci = 'invalid Mark';
+    }
+
+    if (!values.soc) {
+      errors.soc = 'Mark Required';
+    } else if (values.soc.length < 0) {
+      errors.soc = 'invalid Mark';
+    }
+    return errors;
+  },
+  handleSubmit: (values, { props }) => {
+    console.log(values);
+  },
+})(Marksheet);
